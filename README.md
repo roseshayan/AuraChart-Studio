@@ -1,128 +1,155 @@
-# 🌌 AuraChart Studio™ (ChartTheme Studio Pro)
-> **The Ultimate Modern Theme & Visual Manager for MetaTrader 4 & MetaTrader 5**  
+# 🌌 AuraChart Studio™ v2.0 (ChartTheme Studio Pro)
+> **The Next-Gen Visual Ergonomics, Theme Studio & Chart Workspace Manager for MetaTrader 4 & 5**  
 > Developed by **[Shayan Namayandeh (SudoShayanNA)](https://github.com/roseshayan)**
 
 [![MetaTrader 5](https://img.shields.io/badge/MetaTrader_5-MQL5-007acc.svg?style=for-the-badge&logo=windows)](https://www.mql5.com)
 [![MetaTrader 4](https://img.shields.io/badge/MetaTrader_4-MQL4-ff9900.svg?style=for-the-badge&logo=windows)](https://www.mql4.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg?style=for-the-badge)](LICENSE)
+[![Version](https://img.shields.io/badge/Version-2.0.0-emerald.svg?style=for-the-badge)](CHANGELOG.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/roseshayan/AuraChart-Studio?style=for-the-badge&color=blue)](https://github.com/roseshayan/AuraChart-Studio)
 [![Telegram](https://img.shields.io/badge/Telegram-@SudoShayanNA-2CA5E0?style=for-the-badge&logo=telegram)](https://t.me/SudoShayanNA)
 
 ---
 
-[ English ] | [ [مستندات به زبان فارسی](README_FA.md) ] | [ [Live Web Showcase](https://roseshayan.github.io/AuraChart-Studio/) ]
+[ English ] | [ [مستندات فارسی](README_FA.md) ] | [ [Live Web Showcase](https://roseshayan.github.io/AuraChart-Studio/) ] | [ [Theme Specification](docs/theme-format.md) ] | [ [Test Matrix](docs/testing.md) ]
 
 ---
 
 > ### ⚠️ 100% Non-Trading Utility Disclaimer
-> **AuraChart Studio™** is strictly an interface enhancement and visual customization tool for technical analysts. It does **NOT** place, close, modify, or manage orders. It does **NOT** read your account balance or communicate with external servers. It has **ZERO** impact on your trading decisions or execution.
+> **AuraChart Studio™** is strictly an ergonomic user interface enhancement and charting aesthetic manager for technical analysts. It does **NOT** place, close, modify, or manage orders. It does **NOT** read account balances or communicate with external servers. It has **ZERO** impact on your trading decisions, execution, or risk.
 
 ---
 
 ## 🌟 Overview
 
-**AuraChart Studio™** (also known as *ChartTheme Studio Pro*) is a high-performance, non-trading Expert Advisor designed specifically to transform the outdated default visuals of MetaTrader 4 & 5 into clean, aesthetic, and eye-friendly charting environments.
+**AuraChart Studio™ v2.0** (ChartTheme Studio Pro) is a high-performance, non-trading Expert Advisor designed specifically to transform the default visuals of MetaTrader 4 & 5 into clean, aesthetic, and eye-friendly charting environments.
 
-Built for serious technical analysts and day traders who spend hours analyzing charts, AuraChart Studio combines **16 pre-crafted dark & light color palettes**, **automatic styling of user-drawn objects**, and a **silky-smooth draggable HUD panel** with zero trading latency and zero external dependencies.
+Built for technical analysts and day traders who spend hours analyzing charts, version 2.0 introduces an **interactive in-chart Theme Editor**, **portable `.cts` Theme Import/Export**, **Appearance Profiles**, **Automated Day/Night Scheduling**, and **Accessibility Palettes** for color vision deficiency.
 
 ![AuraChart Studio Hero Banner](assets/hero-banner.png)
 
 ---
 
-## 🚀 Key Features
+## 🚀 Key Features in Version 2.0
 
-- 🎨 **16 Balanced Master Palettes:**
-  - **8 Dark Themes:** *Midnight Navy, Obsidian Black, Nord Dark, Monokai Trader, Deep Ocean, Emerald Night, Dark Graphite, Burgundy Night*.
-  - **8 Light Themes:** *Arctic White, Ivory Pro, Paper Trading, Soft Silver, Morning Sky, Sage Light, Sandstone, Minimal Light*.
-- ✏️ **Auto-Styling of Drawn Objects:**
-  - Automatically applies active theme colors to newly drawn **Trendlines, Horizontal/Vertical Lines, Rectangles, Fibonacci Retracements, Channels, and Arrows**.
-  - Retroactively updates all existing chart objects when changing themes.
-- 🖐️ **Draggable On-Chart HUD:**
-  - Move the controller anywhere on your chart canvas with zero flicker and 60 FPS fluidity.
-  - Supports both **Full HUD** (expanded controls & color swatches) and **Compact Mini-Pill** (minimalist toolbar).
-- 🌐 **Apply to All Open Charts:**
-  - Switch the color scheme of your entire terminal across all symbols and timeframes with a single click.
-- 🎲 **Intelligent Non-Repeating Randomizer:**
-  - Picks an alternative high-contrast theme without ever repeating the currently active one.
-- ⌨️ **Keyboard Hotkeys:**
-  - Cycle themes (`T` / `Y`), trigger random palettes (`R`), or toggle grid (`G`) directly from your keyboard.
-- 💾 **State Persistence:**
-  - Automatically remembers your active theme, grid status, panel coordinates, and layout mode across terminal restarts.
-- 🛡️ **1-Click Rollback:**
-  - Creates a full memory snapshot of your chart's original color scheme on launch and restores it at any time with the `Reset Init` button.
-- 🔒 **100% Non-Trading & Secure:**
-  - Opens NO orders, executes NO trades, makes NO network requests, and requires NO external DLLs.
+### 1. In-Chart Theme Editor
+- Modify any core chart color in real time without restarting: Background, Text/Scales, Grid, Candle Bodies, Bar Outlines/Wicks, Line Chart, Volumes, Bid, Ask, and Last Price.
+- Standard `#RRGGBB` Hexadecimal input with native MQL Little-Endian conversion.
+- Quick 12-color palette matrix for rapid customization.
+- Live WCAG contrast ratio calculation with instant readability score.
+
+### 2. Import & Export System (`.cts` Format)
+- Save and share custom palettes using the lightweight, open, versioned `.cts` (ChartTheme Studio) format.
+- Export directly to `<Terminal_Data_Folder>/MQL5/Files/AuraChart/`.
+- Safe import engine with strict path traversal protection and corrupted file detection.
+
+### 3. Appearance Profiles
+- 6 Pre-built institutional workspace presets:
+  - **Night Workspace**: Muted dark slate with subtle bid line.
+  - **Clean Chart**: Distraction-free OLED black.
+  - **Presentation Mode**: High contrast, HUD auto-hidden for screenshots and streaming.
+  - **High Contrast**: Maximum luminance distinction.
+  - **Minimal Light**: Clean white paper with electric blue accents.
+  - **Minimal Dark**: Apple Dark Graphite inspired.
+- Save current chart state directly into custom profiles.
+
+### 4. 22 Ergonomic Master Themes
+- **8 Dark Palettes**: Midnight Navy, Obsidian Black, Nord Dark, Monokai Trader, Deep Ocean, Emerald Night, Dark Graphite, Burgundy Night.
+- **8 Light Palettes**: Arctic White, Ivory Pro, Paper Trading, Soft Silver, Morning Sky, Sage Light, Sandstone, Minimal Light.
+- **6 Accessibility Palettes**: High Contrast Dark, High Contrast Light, Blue & Orange (Daltonism safe), Color Vision Pro (Deuteranopia/Protanopia tuned), Low Glare Dark, Soft Contrast Light.
+
+### 5. Auto Day/Night Scheduling
+- Automatically switches between your preferred Day and Night themes at set times (e.g., 07:00 Day / 19:00 Night).
+- **100% Tick-Independent**: Powered by `OnTimer()`, ensuring transitions work when markets are closed and on weekends.
+- Selectable time source: Local PC Time (`TimeLocal()`) or Broker Server Time (`TimeCurrent()`).
+- Correctly handles overnight intervals spanning midnight.
+
+### 6. Focus & Presentation Modes
+- **Focus Mode**: 1-click decluttering; turns off grid and collapses HUD to a micro-pill.
+- **Presentation Mode**: Hides EA HUD entirely for recording video tutorials or taking clean screenshots.
+
+### 7. Multi-Chart Management Scope
+- Target your changes to:
+  - **Current Chart Only**
+  - **All Open Charts**
+  - **Same Symbol Charts** (e.g. apply only across all EURUSD charts).
+- Completely non-destructive: never alters indicators, timeframe, zoom level, or price scale.
+
+### 8. Auto-Styling of Drawn Objects
+- User-drawn **Trendlines, Rectangles, Fibonacci Retracements, Channels, Horizontal Lines, and Arrows** immediately inherit the active theme's harmonious accent colors.
+
+### 9. Bilingual Interface (English & Persian)
+- Switch dynamically between **English** and **فارسی** directly inside the Settings tab.
 
 ---
 
-## 🎨 Theme Showcase
+## ⌨️ Keyboard Shortcuts
 
-| Category | Theme Name | Description & Visual Tone |
-|:---|:---|:---|
-| **Dark** | **Midnight Navy** | Deep slate navy `#0F172A` with vibrant cyan bull and rose red bear candles. |
-| **Dark** | **Obsidian Black** | Ultra-deep OLED black with vivid mint green and crimson highlights. |
-| **Dark** | **Nord Dark** | Arctic cold slate based on the popular Nord design system with pastel tones. |
-| **Dark** | **Monokai Trader** | Code editor aesthetic with high readability and classic Monokai accents. |
-| **Dark** | **Deep Ocean** | Marine abyss with bioluminescent aqua and coral contrast. |
-| **Dark** | **Emerald Night** | Calming pine background with balanced emerald bull bars. |
-| **Dark** | **Dark Graphite** | Minimalist Apple-inspired dark gray with iOS-style green and red. |
-| **Dark** | **Burgundy Night** | Luxurious dark velvet wine background with soft jade and berry candles. |
-| **Light** | **Arctic White** | Studio-grade pure white with crisp slate text and emerald/coral candles. |
-| **Light** | **Ivory Pro** | Warm cream and ivory background with elegant teal and deep crimson. |
-| **Light** | **Paper Trading** | Newspaper and tactile paper feel with classic ink green and red. |
-| **Light** | **Soft Silver** | Modern neutral light slate preventing eye strain during daytime analysis. |
-| **Light** | **Morning Sky** | Alice Blue background with sky blue and burnt orange candles. |
-| **Light** | **Sage Light** | Herbal pastel green backdrop designed for calming technical analysis. |
-| **Light** | **Sandstone** | Warm earth tones, beige and rich forest green/burgundy. |
-| **Light** | **Minimal Light** | Monochrome base with electric blue bull candles. |
+| Hotkey | Action | Notes |
+|:---:|:---|:---|
+| `T` | Next Theme | Cycles forward |
+| `Y` | Previous Theme | Cycles backward |
+| `R` | Intelligent Random | Picks an alternative high-contrast theme |
+| `G` | Toggle Grid | Toggles grid visibility |
+| `F` | Focus Mode | Toggles distraction-free view |
+| `P` | Presentation Mode | Hides UI for clean display |
+| `H` | Toggle HUD | Shows / hides on-chart control panel |
+
+> *Note: Hotkeys are automatically suppressed when typing inside Hex or Name edit boxes.*
 
 ---
 
-## 📥 Installation Guide
+## 🛠️ Installation Guide
 
-### For MetaTrader 5 (MT5):
-1. In MetaTrader 5, click **File -> Open Data Folder**.
+### MetaTrader 5 (MT5):
+1. In MetaTrader 5, click **File > Open Data Folder**.
 2. Navigate to `MQL5/Experts/`.
-3. Copy `ChartThemeStudio_MT5.mq5` (and `ChartThemeStudio_MT5.ex5`) into this folder.
-4. In MT5, open the **Navigator** window (`Ctrl+N`), right-click on **Expert Advisors**, and click **Refresh**.
-5. Drag **ChartThemeStudio_MT5** onto any chart.
+3. Copy `ChartThemeStudio_MT5.mq5` and `ChartThemeStudio_MT5.ex5` into this folder.
+4. Press `Ctrl+N` to open Navigator, right-click **Expert Advisors**, and click **Refresh**.
+5. Drag **ChartThemeStudio_MT5** onto any chart and click **OK**.
 
-### For MetaTrader 4 (MT4):
-1. In MetaTrader 4, click **File -> Open Data Folder**.
+### MetaTrader 4 (MT4):
+1. In MetaTrader 4, click **File > Open Data Folder**.
 2. Navigate to `MQL4/Experts/`.
 3. Copy `ChartThemeStudio_MT4.mq4` into this folder.
-4. Press `F4` to open **MetaEditor**, open the file, and press `F7` to compile.
-5. In MT4 Navigator (`Ctrl+N`), refresh and drag **ChartThemeStudio_MT4** onto your chart.
+4. Open MetaEditor (`F4`), open the file, and press `F7` to compile.
+5. In the Navigator window, right-click **Expert Advisors**, click **Refresh**, and attach to your chart.
 
 ---
 
-## ⚙️ Input Parameters
+## 📁 Repository Structure
 
-| Parameter | Type | Default | Description |
-|:---|:---|:---|:---|
-| `InpInitialTheme` | Enum | `THEME_MIDNIGHT_NAVY` | Default theme loaded on first run. |
-| `InpRestoreSavedTheme` | bool | `true` | Restores last used theme and settings automatically. |
-| `InpAutoSaveSettings` | bool | `true` | Automatically saves changes to Terminal GlobalVariables. |
-| `InpApplyToAllOpenCharts` | bool | `false` | When true, theme applies across all open terminal charts. |
-| `InpStyleDrawnObjects` | bool | `true` | Automatically themes trendlines, boxes, fibos, and shapes. |
-| `InpShowPanel` | bool | `true` | Displays the on-chart HUD controller. |
-| `InpStartCompact` | bool | `false` | Starts the panel in minimized floating pill mode. |
-| `InpEnableDragging` | bool | `true` | Allows dragging the HUD panel anywhere with the mouse. |
-| `InpEnableHotkeys` | bool | `true` | Enables keyboard shortcuts (`T`, `Y`, `R`, `G`). |
-| `InpDeinitAction` | Enum | `DEINIT_RESTORE_ORIGINAL` | Reverts chart to original state when EA is removed. |
-
----
-
-## 👨‍💻 Author & Contact
-
-**Shayan Namayandeh (SudoShayanNA)**  
-*Senior Financial Software & MQL Developer*
-
-- **GitHub:** [@roseshayan](https://github.com/roseshayan) | [AuraChart-Studio Repository](https://github.com/roseshayan/AuraChart-Studio)
-- **Telegram:** [@SudoShayanNA](https://t.me/SudoShayanNA)
-- **Email:** [namayandeshayan@gmail.com](mailto:namayandeshayan@gmail.com)
+```text
+├── ChartThemeStudio_MT5.mq5   # Native MetaTrader 5 MQL5 source code
+├── ChartThemeStudio_MT5.ex5   # Pre-compiled MT5 executable (0 errors, 0 warnings)
+├── ChartThemeStudio_MT4.mq4   # Native MetaTrader 4 MQL4 source code
+├── icon.ico                   # Standard uncompressed DIB icon resource
+├── README.md                  # Comprehensive English documentation
+├── README_FA.md               # Persian documentation (مستندات فارسی)
+├── CHANGELOG.md               # Version history and release notes
+├── CONTRIBUTING.md            # Guidelines for community contributions
+├── LICENSE                    # MIT Open-Source License
+├── index.html                 # Interactive Web Showcase with live simulator
+├── docs/
+│   ├── theme-format.md        # Technical specification for .cts theme files
+│   ├── compatibility.md       # MT4 vs MT5 architectural comparison
+│   └── testing.md             # Formal 27-scenario verification test matrix
+├── themes/
+│   ├── Cyberpunk_Neon.cts     # Sample community theme
+│   └── Nordic_Frost.cts       # Sample accessibility theme
+└── assets/                    # Graphic assets, banners, and logos
+```
 
 ---
 
-## 📄 License
-This project is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute it for personal and commercial trading setups.
+## 👤 Author & Support
+
+- **Author**: Shayan Namayandeh (SudoShayanNA)
+- **GitHub**: [github.com/roseshayan/AuraChart-Studio](https://github.com/roseshayan/AuraChart-Studio)
+- **Telegram**: [@SudoShayanNA](https://t.me/SudoShayanNA)
+- **Email**: [namayandeshayan@gmail.com](mailto:namayandeshayan@gmail.com)
+
+---
+
+## 📜 License
+Distributed under the **MIT License**. Free for personal and commercial analysis workflows.
