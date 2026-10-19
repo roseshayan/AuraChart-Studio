@@ -5,12 +5,17 @@
 [![MetaTrader 5](https://img.shields.io/badge/MetaTrader_5-MQL5-007acc.svg?style=for-the-badge&logo=windows)](https://www.mql5.com)
 [![MetaTrader 4](https://img.shields.io/badge/MetaTrader_4-MQL4-ff9900.svg?style=for-the-badge&logo=windows)](https://www.mql4.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg?style=for-the-badge)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/roseshayan/charttheme-studio?style=for-the-badge&color=blue)](https://github.com/roseshayan)
+[![GitHub Stars](https://img.shields.io/github/stars/roseshayan/AuraChart-Studio?style=for-the-badge&color=blue)](https://github.com/roseshayan/AuraChart-Studio)
 [![Telegram](https://img.shields.io/badge/Telegram-@SudoShayanNA-2CA5E0?style=for-the-badge&logo=telegram)](https://t.me/SudoShayanNA)
 
 ---
 
-[ English ] | [ [مستندات به زبان فارسی](README_FA.md) ]
+[ English ] | [ [مستندات به زبان فارسی](README_FA.md) ] | [ [Live Web Showcase](https://roseshayan.github.io/AuraChart-Studio/) ]
+
+---
+
+> ### ⚠️ 100% Non-Trading Utility Disclaimer
+> **AuraChart Studio™** is strictly an interface enhancement and visual customization tool for technical analysts. It does **NOT** place, close, modify, or manage orders. It does **NOT** read your account balance or communicate with external servers. It has **ZERO** impact on your trading decisions or execution.
 
 ---
 
@@ -113,7 +118,7 @@ Built for serious technical analysts and day traders who spend hours analyzing c
 **Shayan Namayandeh (SudoShayanNA)**  
 *Senior Financial Software & MQL Developer*
 
-- **GitHub:** [@roseshayan](https://github.com/roseshayan)
+- **GitHub:** [@roseshayan](https://github.com/roseshayan) | [AuraChart-Studio Repository](https://github.com/roseshayan/AuraChart-Studio)
 - **Telegram:** [@SudoShayanNA](https://t.me/SudoShayanNA)
 - **Email:** [namayandeshayan@gmail.com](mailto:namayandeshayan@gmail.com)
 

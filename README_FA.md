@@ -5,12 +5,17 @@
 [![MetaTrader 5](https://img.shields.io/badge/MetaTrader_5-MQL5-007acc.svg?style=for-the-badge&logo=windows)](https://www.mql5.com)
 [![MetaTrader 4](https://img.shields.io/badge/MetaTrader_4-MQL4-ff9900.svg?style=for-the-badge&logo=windows)](https://www.mql4.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg?style=for-the-badge)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/roseshayan/charttheme-studio?style=for-the-badge&color=blue)](https://github.com/roseshayan)
+[![GitHub Stars](https://img.shields.io/github/stars/roseshayan/AuraChart-Studio?style=for-the-badge&color=blue)](https://github.com/roseshayan/AuraChart-Studio)
 [![Telegram](https://img.shields.io/badge/Telegram-@SudoShayanNA-2CA5E0?style=for-the-badge&logo=telegram)](https://t.me/SudoShayanNA)
 
 ---
 
-[ [English Documentation](README.md) ] | [ فارسی ]
+[ [English Documentation](README.md) ] | [ فارسی ] | [ [مشاهده آنلاین لندینگ پیج](https://roseshayan.github.io/AuraChart-Studio/) ]
+
+---
+
+> ### ⚠️ سلب مسئولیت و شفاف‌سازی: ابزار ۱۰۰٪ غیرمعاملاتی
+> **AuraChart Studio™** صرفاً یک دستیار بصری، ارگونومیک و استایل‌دهی ظاهر چارت است. این برنامه **به هیچ عنوان معامله‌ای باز یا بسته نمی‌کند**، هیچ سفارشی را مدیریت نمی‌کند و **هیچ‌گونه تاثیری در معاملات شما ندارد**.
 
 ---
 
@@ -119,7 +124,8 @@
 **شایان نماینده (Shayan Namayandeh - SudoShayanNA)**  
 *توسعه‌دهنده ارشد سیستم‌های الگوریتمی مالی و زبان‌های MQL4/MQL5*
 
-- 🌐 **گیت‌هاب:** [github.com/roseshayan](https://github.com/roseshayan)
+- 🌐 **پروفایل گیت‌هاب:** [github.com/roseshayan](https://github.com/roseshayan)
+- 📦 **مخزن پروژه در گیت‌هاب:** [github.com/roseshayan/AuraChart-Studio](https://github.com/roseshayan/AuraChart-Studio)
 - ✈️ **تلگرام:** [@SudoShayanNA](https://t.me/SudoShayanNA)
 - ✉️ **ایمیل مستقیم:** [namayandeshayan@gmail.com](mailto:namayandeshayan@gmail.com)
 

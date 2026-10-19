@@ -4,10 +4,12 @@
 //|                                   https://github.com/roseshayan  |
 //+------------------------------------------------------------------+
 #property copyright   "Shayan Namayandeh (SudoShayanNA)"
-#property link        "https://github.com/roseshayan"
+#property link        "https://github.com/roseshayan/AuraChart-Studio"
 #property version     "1.10"
-#property description "ChartTheme Studio - Professional Theme & Visuals Manager for MetaTrader 5"
+#property description "AuraChart Studio (ChartTheme Studio Pro) - Visual & Theme Manager"
 #property description "Author: Shayan Namayandeh | Telegram: @SudoShayanNA | Email: namayandeshayan@gmail.com"
+#property description "NOTE: 100% Non-Trading Utility. Does NOT open, close, or affect your trades."
+#property icon        "icon.ico"
 #property strict
 
 //+------------------------------------------------------------------+
@@ -1040,15 +1042,18 @@ void ResetToInitialChartState()
 
 void ShowAuthorModal()
 {
-   string msg = "ChartTheme Studio v1.10\n"
-              + "------------------------------------\n"
+   string msg = "AuraChart Studio v1.10 (ChartTheme Studio Pro)\n"
+              + "====================================\n"
               + "Author: Shayan Namayandeh (SudoShayanNA)\n"
               + "Telegram: @SudoShayanNA\n"
               + "Email: namayandeshayan@gmail.com\n"
-              + "GitHub: https://github.com/roseshayan\n"
-              + "------------------------------------\n"
-              + "Features: 16 Professional Palettes, Auto-Styling Drawn Objects & Full Drag-and-Drop HUD.";
-   MessageBox(msg, "About ChartTheme Studio", MB_OK | MB_ICONINFORMATION);
+              + "GitHub: https://github.com/roseshayan/AuraChart-Studio\n"
+              + "====================================\n"
+              + "IMPORTANT NOTICE:\n"
+              + "This tool is 100% NON-TRADING.\n"
+              + "It does NOT open, close, or manage any orders.\n"
+              + "It has NO effect on your trades or trading accounts.";
+   MessageBox(msg, "About AuraChart Studio", MB_OK | MB_ICONINFORMATION);
 }
 
 //+------------------------------------------------------------------+
