@@ -53,18 +53,35 @@ Built for technical analysts and day traders who spend hours analyzing charts, v
   - **Minimal Dark**: Apple Dark Graphite inspired.
 - Save current chart state directly into custom profiles.
 
-### 4. 22 Ergonomic Master Themes
+### 4. 26 Ergonomic Master Themes (Including Fantasy Palettes)
 - **8 Dark Palettes**: Midnight Navy, Obsidian Black, Nord Dark, Monokai Trader, Deep Ocean, Emerald Night, Dark Graphite, Burgundy Night.
 - **8 Light Palettes**: Arctic White, Ivory Pro, Paper Trading, Soft Silver, Morning Sky, Sage Light, Sandstone, Minimal Light.
 - **6 Accessibility Palettes**: High Contrast Dark, High Contrast Light, Blue & Orange (Daltonism safe), Color Vision Pro (Deuteranopia/Protanopia tuned), Low Glare Dark, Soft Contrast Light.
+- **4 Fantasy Palettes (Girly & Boyish)**:
+  - **Sakura Dream (🌸 Girly)**: Mysterious deep plum velvet background (`#1C1526`), soft rose gold scales, hot sakura pink bull candles, and dreamy lavender bear accents.
+  - **Cotton Candy (🍭 Girly)**: Midnight blackberry background (`#160E22`), pastel lilac axes, vibrant barbie pink bull candles, and vivid aqua sky cyan bear candles.
+  - **Cyber Mecha (⚡ Boyish)**: Stealth gunmetal titanium background (`#10141A`), matrix grid, toxic neon acid green bull candles (`#00FF66`), and cyber plasma crimson bear candles (`#FF2A6D`).
+  - **Phantom Samurai (🗡️ Boyish)**: Void indigo black background (`#0A0D14`), razor katana steel blade axes, electric blue bull candles (`#00A6FF`), and molten forge amber bear candles (`#FF9E00`).
 
-### 5. Auto Day/Night Scheduling
+### 5. Interactive Theme Browser & Category Filter
+- **Paginated Direct Theme List**: Tab 0 displays 6 themes simultaneously with active state bullets (`●`/`○`), theme name, favorite bookmark status, and mini background/bull color preview swatches.
+- **One-Click Instant Apply**: Tap any row to instantly activate that theme on the chart.
+- **Category Filter Pills**: Fast filtering by `[All]`, `[Dark]`, `[Light]`, `[🌸/⚡ Fantasy]`, `[A11y]`, or `[★ Favorites]`.
+- **Page Controls**: Smooth pagination navigation (`◄ Prev`, `Page X/Y`, `Next ►`).
+
+### 6. 60 FPS Buttery Smooth Drag & Drop
+- **Zero-Flicker Motion**: Uses native coordinate offset shifting (`MoveAllUIObjects`) without destroying or recreating objects during mouse drag.
+- **Chart Scroll Lock**: Automatically locks background chart dragging (`CHART_MOUSE_SCROLL = false`) while grabbing the HUD header, preventing accidental chart drift.
+- **Persistent Location**: Memorizes coordinates to chart global state upon release.
+
+### 7. Smart Boundary-Transition Auto Scheduler
 - Automatically switches between your preferred Day and Night themes at set times (e.g., 07:00 Day / 19:00 Night).
+- **Zero Accidental Overrides**: Switching triggers strictly upon crossing the time boundary, allowing full freedom to explore other themes manually throughout the session without being reverted.
 - **100% Tick-Independent**: Powered by `OnTimer()`, ensuring transitions work when markets are closed and on weekends.
 - Selectable time source: Local PC Time (`TimeLocal()`) or Broker Server Time (`TimeCurrent()`).
 - Correctly handles overnight intervals spanning midnight.
 
-### 6. Focus & Presentation Modes
+### 8. Focus & Presentation Modes
 - **Focus Mode**: 1-click decluttering; turns off grid and collapses HUD to a micro-pill.
 - **Presentation Mode**: Hides EA HUD entirely for recording video tutorials or taking clean screenshots.
 

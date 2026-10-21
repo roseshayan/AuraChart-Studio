@@ -17,8 +17,9 @@
 //+------------------------------------------------------------------+
 enum ENUM_THEME_CATEGORY
 {
-   THEME_CAT_DARK,       // Dark Theme
+   THEME_CAT_DARK = 0,   // Dark Theme
    THEME_CAT_LIGHT,      // Light Theme
+   THEME_CAT_FANTASY,    // Fantasy Theme (Girly & Boyish)
    THEME_CAT_ACCESS      // Accessibility Theme
 };
 
@@ -50,7 +51,13 @@ enum ENUM_PRESET_THEME
    THEME_BLUE_ORANGE,         // Blue & Orange (Daltonism safe)
    THEME_COLOR_VISION_PRO,    // Color Vision Pro (Deuteranopia & Protanopia tuned)
    THEME_LOW_GLARE_DARK,      // Low Glare Dark (Matte Charcoal & Eye Relief)
-   THEME_SOFT_CONTRAST_LIGHT  // Soft Contrast Light (Warm Sepia & Low Blue Light)
+   THEME_SOFT_CONTRAST_LIGHT, // Soft Contrast Light (Warm Sepia & Low Blue Light)
+
+   // Fantasy Themes - Girly & Boyish (22 - 25)
+   THEME_SAKURA_DREAM,        // Sakura Dream (🌸 Girly: Plum & Sakura Blossom)
+   THEME_COTTON_CANDY,        // Cotton Candy (🍭 Girly: Vivid Pink & Aqua Pop)
+   THEME_CYBER_MECHA,         // Cyber Mecha (⚡ Boyish: Stealth Gunmetal & Neon Acid)
+   THEME_PHANTOM_SAMURAI      // Phantom Samurai (🗡️ Boyish: Void Black & Katana Blue)
 };
 
 enum ENUM_DEINIT_ACTION
@@ -211,10 +218,16 @@ input ENUM_DEINIT_ACTION InpDeinitAction         = DEINIT_RESTORE_ORIGINAL; // O
 //+------------------------------------------------------------------+
 //| Global Variables & State                                         |
 //+------------------------------------------------------------------+
-#define TOTAL_BUILTIN_THEMES 22
-#define MAX_TOTAL_THEMES     30
+#define TOTAL_BUILTIN_THEMES 26
+#define MAX_TOTAL_THEMES     35
+#define THEMES_PER_PAGE      6
 #define MAX_RECENT           5
 #define TOTAL_PROFILES       6
+
+int                    g_list_cat_filter     = -1; // -1: All, 0: Dark, 1: Light, 2: Fantasy, 3: A11y, 4: Favs
+int                    g_list_page           = 0;
+bool                   g_auto_schedule_active = false;
+int                    g_last_scheduled_phase = -1;
 
 ThemePalette           g_themes[MAX_TOTAL_THEMES];
 int                    g_themes_count        = TOTAL_BUILTIN_THEMES;
@@ -263,6 +276,8 @@ bool                   g_pre_focus_compact   = false;
 // Forward declarations
 void BuildUIPanel();
 void UpdateUIPositions();
+void MoveAllUIObjects(const int dx, const int dy);
+int  GetFilteredThemeIndices(int &indices[]);
 void DeleteAllUIObjects();
 void StyleAllDrawnObjects(const long chart_id, const int theme_idx);
 void StyleSingleObject(const long chart_id, const string obj_name, const int theme_idx);
@@ -340,6 +355,15 @@ string Tr(const string key)
       if(key == "VAL_GOOD")         return "بسیار عالی (AA)";
       if(key == "VAL_POOR")         return "ضعیف! (کم)";
       if(key == "PRES_EXIT")        return "خروج از ارائه";
+      if(key == "CAT_ALL")          return "همه";
+      if(key == "CAT_DARK")         return "تیره";
+      if(key == "CAT_LIGHT")        return "روشن";
+      if(key == "CAT_FANTASY")      return "فانتزی";
+      if(key == "CAT_ACCESS")       return "دسترسی";
+      if(key == "CAT_FAV")          return "علاقه‌مندی";
+      if(key == "BTN_PAGE_PREV")    return "◄ قبلی";
+      if(key == "BTN_PAGE_NEXT")    return "بعدی ►";
+      if(key == "PAGE_LABEL")       return "صفحه";
    }
 
    // Default English
@@ -394,6 +418,15 @@ string Tr(const string key)
    if(key == "VAL_GOOD")         return "Optimal (AA)";
    if(key == "VAL_POOR")         return "Low Contrast!";
    if(key == "PRES_EXIT")        return "Exit Presentation";
+   if(key == "CAT_ALL")          return "All";
+   if(key == "CAT_DARK")         return "Dark";
+   if(key == "CAT_LIGHT")        return "Light";
+   if(key == "CAT_FANTASY")      return "Fantasy";
+   if(key == "CAT_ACCESS")       return "A11y";
+   if(key == "CAT_FAV")          return "★ Fav";
+   if(key == "BTN_PAGE_PREV")    return "◄ Prev";
+   if(key == "BTN_PAGE_NEXT")    return "Next ►";
+   if(key == "PAGE_LABEL")       return "Page";
 
    return key;
 }
@@ -860,6 +893,78 @@ void InitializeThemes()
    g_themes[21].lastPrice  = C'195,135,45';
    g_themes[21].stopLevels = C'165,85,60';
    g_themes[21].isFavorite = false;
+
+   // 22: Sakura Dream (Fantasy Girly: Plum & Sakura Blossom)
+   g_themes[22].name       = "Sakura Dream";
+   g_themes[22].category   = THEME_CAT_FANTASY;
+   g_themes[22].bg         = C'28,21,38';      // #1C1526 Plum Velvet
+   g_themes[22].fg         = C'235,185,210';   // #EBB9D2 Rose Gold
+   g_themes[22].grid       = C'48,34,64';      // #302240 Soft Plum
+   g_themes[22].barUp       = C'255,133,179';   // #FF85B3 Sakura Pink
+   g_themes[22].barDown     = C'179,136,255';   // #B388FF Lavender
+   g_themes[22].candleBull  = C'255,105,180';   // #FF69B4 Hot Sakura
+   g_themes[22].candleBear  = C'147,112,219';   // #9370DB Medium Purple
+   g_themes[22].chartLine   = C'255,182,193';   // Light Pink
+   g_themes[22].volumes     = C'120,80,140';
+   g_themes[22].bid         = C'255,105,180';
+   g_themes[22].ask         = C'179,136,255';
+   g_themes[22].lastPrice   = C'255,215,0';
+   g_themes[22].stopLevels  = C'255,80,80';
+   g_themes[22].isFavorite  = false;
+
+   // 23: Cotton Candy (Fantasy Girly: Vivid Pink & Aqua Pop)
+   g_themes[23].name       = "Cotton Candy";
+   g_themes[23].category   = THEME_CAT_FANTASY;
+   g_themes[23].bg         = C'22,14,34';      // #160E22 Midnight Blackberry
+   g_themes[23].fg         = C'240,210,250';   // #F0D2FA Pastel Lilac
+   g_themes[23].grid       = C'42,26,62';      // #2A1A3E
+   g_themes[23].barUp       = C'255,64,129';    // #FF4081 Barbie Pink
+   g_themes[23].barDown     = C'0,229,255';     // #00E5FF Aqua Cyan
+   g_themes[23].candleBull  = C'255,64,129';
+   g_themes[23].candleBear  = C'0,229,255';
+   g_themes[23].chartLine   = C'255,128,171';
+   g_themes[23].volumes     = C'100,50,130';
+   g_themes[23].bid         = C'255,64,129';
+   g_themes[23].ask         = C'0,229,255';
+   g_themes[23].lastPrice   = C'255,235,59';
+   g_themes[23].stopLevels  = C'255,82,82';
+   g_themes[23].isFavorite  = false;
+
+   // 24: Cyber Mecha (Fantasy Boyish: Stealth Gunmetal & Neon Acid)
+   g_themes[24].name       = "Cyber Mecha";
+   g_themes[24].category   = THEME_CAT_FANTASY;
+   g_themes[24].bg         = C'16,20,26';      // #10141A Stealth Gunmetal
+   g_themes[24].fg         = C'140,165,185';   // #8CA5B9 Steel Cyan
+   g_themes[24].grid       = C'26,34,44';      // #1A222C Matrix Grid
+   g_themes[24].barUp       = C'0,255,102';     // #00FF66 Neon Acid Green
+   g_themes[24].barDown     = C'255,42,109';    // #FF2A6D Cyber Plasma Crimson
+   g_themes[24].candleBull  = C'0,230,90';
+   g_themes[24].candleBear  = C'235,35,95';
+   g_themes[24].chartLine   = C'5,217,232';     // #05D9E8 Cyber Cyan
+   g_themes[24].volumes     = C'30,70,80';
+   g_themes[24].bid         = C'0,255,102';
+   g_themes[24].ask         = C'255,42,109';
+   g_themes[24].lastPrice   = C'5,217,232';
+   g_themes[24].stopLevels  = C'255,0,85';
+   g_themes[24].isFavorite  = false;
+
+   // 25: Phantom Samurai (Fantasy Boyish: Void Black & Katana Blue)
+   g_themes[25].name       = "Phantom Samurai";
+   g_themes[25].category   = THEME_CAT_FANTASY;
+   g_themes[25].bg         = C'10,13,20';      // #0A0D14 Void Dark Indigo
+   g_themes[25].fg         = C'160,180,205';   // #A0B4CD Katana Steel
+   g_themes[25].grid       = C'22,28,42';      // #161C2A
+   g_themes[25].barUp       = C'0,166,255';     // #00A6FF Electric Katana Blue
+   g_themes[25].barDown     = C'255,158,0';     // #FF9E00 Molten Forge Gold/Amber
+   g_themes[25].candleBull  = C'0,150,235';
+   g_themes[25].candleBear  = C'240,145,0';
+   g_themes[25].chartLine   = C'90,200,255';
+   g_themes[25].volumes     = C'35,55,85';
+   g_themes[25].bid         = C'0,166,255';
+   g_themes[25].ask         = C'255,158,0';
+   g_themes[25].lastPrice   = C'255,215,0';
+   g_themes[25].stopLevels  = C'230,50,50';
+   g_themes[25].isFavorite  = false;
    
    // Copy active theme to editor workbuffer
    g_edit_theme = g_themes[0];
@@ -868,6 +973,39 @@ void InitializeThemes()
 //+------------------------------------------------------------------+
 //| Initialize Preset Appearance Profiles                            |
 //+------------------------------------------------------------------+
+//+------------------------------------------------------------------+
+//| Get Filtered Theme Indices for Theme Browser List                |
+//+------------------------------------------------------------------+
+int GetFilteredThemeIndices(int &indices[])
+{
+   ArrayResize(indices, g_themes_count);
+   int count = 0;
+   for(int i = 0; i < g_themes_count; i++)
+   {
+      bool match = false;
+      if(g_list_cat_filter == -1) // All
+         match = true;
+      else if(g_list_cat_filter == 0 && g_themes[i].category == THEME_CAT_DARK)
+         match = true;
+      else if(g_list_cat_filter == 1 && g_themes[i].category == THEME_CAT_LIGHT)
+         match = true;
+      else if(g_list_cat_filter == 2 && g_themes[i].category == THEME_CAT_FANTASY)
+         match = true;
+      else if(g_list_cat_filter == 3 && g_themes[i].category == THEME_CAT_ACCESS)
+         match = true;
+      else if(g_list_cat_filter == 4 && g_themes[i].isFavorite)
+         match = true;
+         
+      if(match)
+      {
+         indices[count] = i;
+         count++;
+      }
+   }
+   ArrayResize(indices, count);
+   return count;
+}
+
 void InitializeProfiles()
 {
    g_profiles[0].name          = "Night Workspace";
@@ -1602,8 +1740,8 @@ void BuildUIPanel()
    // -----------------------------------------------------------------
    // 2. Full HUD Layout
    // -----------------------------------------------------------------
-   int hudW = 280;
-   int hudH = 265;
+   int hudW = 290;
+   int hudH = 345;
    
    // Card Backdrop
    CreateRectLabel(g_ui_prefix + "BG_PANEL", g_panel_x, g_panel_y, hudW, hudH, card_bg, card_border, InpPanelCorner);
@@ -1619,7 +1757,7 @@ void BuildUIPanel()
 
    // Navigation Tab Bar
    int tabY = g_panel_y + 34;
-   int tabW = 52;
+   int tabW = 54;
    CreateButton(g_ui_prefix + "TAB_0", Tr("TAB_THEMES"),   g_panel_x + 6 + (0 * tabW), tabY, tabW - 2, 22, (g_active_tab == TAB_THEMES   ? btn_active : btn_normal), text_main, card_border, 7, InpPanelCorner);
    CreateButton(g_ui_prefix + "TAB_1", Tr("TAB_EDITOR"),   g_panel_x + 6 + (1 * tabW), tabY, tabW - 2, 22, (g_active_tab == TAB_EDITOR   ? btn_active : btn_normal), text_main, card_border, 7, InpPanelCorner);
    CreateButton(g_ui_prefix + "TAB_2", Tr("TAB_PROFILES"), g_panel_x + 6 + (2 * tabW), tabY, tabW - 2, 22, (g_active_tab == TAB_PROFILES ? btn_active : btn_normal), text_main, card_border, 7, InpPanelCorner);
@@ -1627,50 +1765,80 @@ void BuildUIPanel()
    CreateButton(g_ui_prefix + "TAB_4", Tr("TAB_SETTINGS"), g_panel_x + 6 + (4 * tabW), tabY, tabW - 2, 22, (g_active_tab == TAB_SETTINGS ? btn_active : btn_normal), text_main, card_border, 7, InpPanelCorner);
 
    // -----------------------------------------------------------------
-   // TAB 0: Themes & Quick Controls
+   // TAB 0: Themes & Interactive Theme Browser List
    // -----------------------------------------------------------------
    if(g_active_tab == TAB_THEMES)
    {
-      // Theme Display Banner
-      int thmBoxY = g_panel_y + 62;
-      CreateRectLabel(g_ui_prefix + "BG_ACTIVE_THM", g_panel_x + 10, thmBoxY, hudW - 20, 48, header_bg, card_border, InpPanelCorner);
-      
-      CreateLabel(g_ui_prefix + "LBL_ACT_THM", Tr("LBL_ACTIVE_THEME"), g_panel_x + 18, thmBoxY + 6, text_muted, 7, InpPanelCorner);
-      CreateLabel(g_ui_prefix + "LBL_THM_NAME", g_themes[g_current_theme_idx].name, g_panel_x + 18, thmBoxY + 22, btn_accent, 9, InpPanelCorner, true);
-      
-      // Favorite Star toggle
-      string starIcon = g_themes[g_current_theme_idx].isFavorite ? "★" : "☆";
-      color starColor = g_themes[g_current_theme_idx].isFavorite ? C'234,179,8' : text_muted;
-      CreateButton(g_ui_prefix + "BTN_FAV", starIcon, g_panel_x + hudW - 40, thmBoxY + 10, 26, 26, card_bg, starColor, card_border, 11, InpPanelCorner);
-      
-      // Quick Control Buttons
-      int row1Y = g_panel_y + 116;
-      CreateButton(g_ui_prefix + "BTN_PREV", Tr("BTN_PREV"), g_panel_x + 10, row1Y, 78, 26, btn_normal, text_main, card_border, 8, InpPanelCorner);
-      CreateButton(g_ui_prefix + "BTN_NEXT", Tr("BTN_NEXT"), g_panel_x + 92, row1Y, 78, 26, btn_normal, text_main, card_border, 8, InpPanelCorner);
-      CreateButton(g_ui_prefix + "BTN_RANDOM", Tr("BTN_RANDOM"), g_panel_x + 174, row1Y, 96, 26, btn_normal, btn_accent, card_border, 8, InpPanelCorner);
+      // Category Filter Pills: All, Dark, Light, Fantasy, A11y, ★ Fav
+      int fltY = g_panel_y + 60;
+      int fltW = 44;
+      CreateButton(g_ui_prefix + "BTN_FLT_ALL", Tr("CAT_ALL"), g_panel_x + 8 + (0 * 46), fltY, fltW, 20,
+                   (g_list_cat_filter == -1 ? btn_active : btn_normal), text_main, card_border, 7, InpPanelCorner);
+      CreateButton(g_ui_prefix + "BTN_FLT_DARK", Tr("CAT_DARK"), g_panel_x + 8 + (1 * 46), fltY, fltW, 20,
+                   (g_list_cat_filter == 0 ? btn_active : btn_normal), text_main, card_border, 7, InpPanelCorner);
+      CreateButton(g_ui_prefix + "BTN_FLT_LIGHT", Tr("CAT_LIGHT"), g_panel_x + 8 + (2 * 46), fltY, fltW, 20,
+                   (g_list_cat_filter == 1 ? btn_active : btn_normal), text_main, card_border, 7, InpPanelCorner);
+      CreateButton(g_ui_prefix + "BTN_FLT_FANTASY", "🌸/⚡", g_panel_x + 8 + (3 * 46), fltY, fltW, 20,
+                   (g_list_cat_filter == 2 ? btn_active : btn_normal), text_main, card_border, 7, InpPanelCorner);
+      CreateButton(g_ui_prefix + "BTN_FLT_ACCESS", Tr("CAT_ACCESS"), g_panel_x + 8 + (4 * 46), fltY, fltW, 20,
+                   (g_list_cat_filter == 3 ? btn_active : btn_normal), text_main, card_border, 7, InpPanelCorner);
+      CreateButton(g_ui_prefix + "BTN_FLT_FAV", "★", g_panel_x + 8 + (5 * 46), fltY, fltW, 20,
+                   (g_list_cat_filter == 4 ? btn_active : btn_normal), (g_list_cat_filter == 4 ? text_main : C'234,179,8'), card_border, 8, InpPanelCorner);
 
-      int row2Y = g_panel_y + 148;
-      color gridBg = g_grid_state ? btn_active : btn_normal;
-      CreateButton(g_ui_prefix + "BTN_GRID", Tr("BTN_GRID") + ": " + (g_grid_state ? Tr("VAL_ON") : Tr("VAL_OFF")),
-                   g_panel_x + 10, row2Y, 126, 26, gridBg, text_main, card_border, 8, InpPanelCorner);
-      CreateButton(g_ui_prefix + "BTN_FOCUS", Tr("BTN_FOCUS"), g_panel_x + 142, row2Y, 128, 26, btn_normal, text_main, card_border, 8, InpPanelCorner);
+      // Filtered Theme List (6 items visible per page)
+      int filteredIndices[];
+      int totalFiltered = GetFilteredThemeIndices(filteredIndices);
+      int totalPages = (totalFiltered + THEMES_PER_PAGE - 1) / THEMES_PER_PAGE;
+      if(totalPages < 1) totalPages = 1;
+      if(g_list_page >= totalPages) g_list_page = totalPages - 1;
+      if(g_list_page < 0) g_list_page = 0;
 
-      // Category Fast Pickers
-      int row3Y = g_panel_y + 180;
-      CreateButton(g_ui_prefix + "BTN_CAT_DARK", "Dark (8)", g_panel_x + 10, row3Y, 82, 24, C'20,24,35', text_main, card_border, 7, InpPanelCorner);
-      CreateButton(g_ui_prefix + "BTN_CAT_LIGHT", "Light (8)", g_panel_x + 96, row3Y, 82, 24, C'230,235,245', C'20,24,35', card_border, 7, InpPanelCorner);
-      CreateButton(g_ui_prefix + "BTN_CAT_ACCESS", "A11y (6)", g_panel_x + 182, row3Y, 88, 24, C'16,80,120', text_main, card_border, 7, InpPanelCorner);
-
-      // Recent History Row
-      int row4Y = g_panel_y + 210;
-      CreateLabel(g_ui_prefix + "LBL_REC", Tr("LBL_RECENT"), g_panel_x + 12, row4Y + 4, text_muted, 7, InpPanelCorner);
-      for(int r = 0; r < g_recent_count && r < 4; r++)
+      int startIdx = g_list_page * THEMES_PER_PAGE;
+      for(int r = 0; r < THEMES_PER_PAGE; r++)
       {
-         int rIdx = g_recent_themes[r];
-         string rName = IntegerToString(rIdx + 1);
-         CreateButton(g_ui_prefix + "BTN_REC_" + IntegerToString(rIdx), rName,
-                      g_panel_x + 55 + (r * 32), row4Y, 28, 20, btn_normal, text_main, card_border, 7, InpPanelCorner);
+         int itemIdx = startIdx + r;
+         int itemY = g_panel_y + 86 + (r * 25);
+         if(itemIdx < totalFiltered)
+         {
+            int tIdx = filteredIndices[itemIdx];
+            bool isCurrent = (tIdx == g_current_theme_idx);
+            string bullet = isCurrent ? "● " : "○ ";
+            string favStar = g_themes[tIdx].isFavorite ? " ★" : "";
+            string itemTitle = bullet + IntegerToString(tIdx + 1) + ". " + g_themes[tIdx].name + favStar;
+            
+            color rowBg = isCurrent ? btn_active : btn_normal;
+            color rowTxt = isCurrent ? C'255,255,255' : text_main;
+            
+            // Theme Direct Selection Row
+            CreateButton(g_ui_prefix + "BTN_SELTHM_" + IntegerToString(tIdx), itemTitle,
+                         g_panel_x + 8, itemY, hudW - 54, 22, rowBg, rowTxt, card_border, 7, InpPanelCorner);
+            
+            // Mini color swatch preview (Background + Bull Candle Accent)
+            CreateRectLabel(g_ui_prefix + "SWATCH_" + IntegerToString(tIdx),
+                            g_panel_x + hudW - 42, itemY + 2, 32, 18, g_themes[tIdx].bg, g_themes[tIdx].candleBull, InpPanelCorner);
+         }
       }
+
+      // Pagination Controls
+      int pageY = g_panel_y + 242;
+      CreateButton(g_ui_prefix + "BTN_PAGE_PREV", "◄ Prev", g_panel_x + 8, pageY, 68, 22, btn_normal, text_main, card_border, 7, InpPanelCorner);
+      CreateLabel(g_ui_prefix + "LBL_PAGE_INFO", "Page " + IntegerToString(g_list_page + 1) + " / " + IntegerToString(totalPages),
+                  g_panel_x + 94, pageY + 4, text_muted, 8, InpPanelCorner);
+      CreateButton(g_ui_prefix + "BTN_PAGE_NEXT", "Next ►", g_panel_x + hudW - 78, pageY, 70, 22, btn_normal, text_main, card_border, 7, InpPanelCorner);
+
+      // Quick Actions Row (Random, Grid, Focus, Bookmark Fav)
+      int actY = g_panel_y + 270;
+      CreateButton(g_ui_prefix + "BTN_RANDOM", "🎲 " + Tr("BTN_RANDOM"), g_panel_x + 8, actY, 88, 24, btn_normal, btn_accent, card_border, 7, InpPanelCorner);
+      
+      color gridBg = g_grid_state ? btn_active : btn_normal;
+      CreateButton(g_ui_prefix + "BTN_GRID", "▦ " + Tr("BTN_GRID"), g_panel_x + 100, actY, 86, 24, gridBg, text_main, card_border, 7, InpPanelCorner);
+      
+      CreateButton(g_ui_prefix + "BTN_FOCUS", "👁 " + Tr("BTN_FOCUS"), g_panel_x + 190, actY, 92, 24, btn_normal, text_main, card_border, 7, InpPanelCorner);
+
+      // Status / Active Theme Bar
+      int stY = g_panel_y + 300;
+      string stMsg = (g_status_msg != "") ? g_status_msg : ("Theme: " + g_themes[g_current_theme_idx].name);
+      CreateLabel(g_ui_prefix + "LBL_ST_THEME", stMsg, g_panel_x + 12, stY + 4, text_muted, 7, InpPanelCorner);
    }
 
    // -----------------------------------------------------------------
@@ -1769,8 +1937,8 @@ void BuildUIPanel()
    {
       int schY = g_panel_y + 64;
       CreateLabel(g_ui_prefix + "LBL_SCH_ST", Tr("LBL_SCHEDULE_ST"), g_panel_x + 14, schY, text_main, 8, InpPanelCorner);
-      CreateButton(g_ui_prefix + "BTN_TOGGLE_SCH", (InpAutoSchedule ? Tr("VAL_ON") : Tr("VAL_OFF")),
-                   g_panel_x + hudW - 80, schY - 4, 66, 22, (InpAutoSchedule ? btn_active : btn_normal), text_main, card_border, 7, InpPanelCorner);
+      CreateButton(g_ui_prefix + "BTN_TOGGLE_SCH", (g_auto_schedule_active ? Tr("VAL_ON") : Tr("VAL_OFF")),
+                   g_panel_x + hudW - 80, schY - 4, 66, 22, (g_auto_schedule_active ? btn_active : btn_normal), text_main, card_border, 7, InpPanelCorner);
 
       int timeY = g_panel_y + 92;
       CreateLabel(g_ui_prefix + "LBL_DAY_TIME", "☀ Day: " + InpDayStartTime, g_panel_x + 14, timeY, text_muted, 7, InpPanelCorner);
@@ -1832,8 +2000,27 @@ void BuildUIPanel()
 }
 
 //+------------------------------------------------------------------+
-//| Update Dynamic UI Positions on Drag                              |
+//| Move All UI Objects Smoothly on Drag (Zero Recreation, 60 FPS)   |
 //+------------------------------------------------------------------+
+void MoveAllUIObjects(const int dx, const int dy)
+{
+   int total = ObjectsTotal(0, 0, -1);
+   int prefixLen = StringLen(g_ui_prefix);
+   
+   for(int i = 0; i < total; i++)
+   {
+      string name = ObjectName(0, i, 0, -1);
+      if(StringSubstr(name, 0, prefixLen) == g_ui_prefix)
+      {
+         int curX = (int)ObjectGetInteger(0, name, OBJPROP_XDISTANCE);
+         int curY = (int)ObjectGetInteger(0, name, OBJPROP_YDISTANCE);
+         ObjectSetInteger(0, name, OBJPROP_XDISTANCE, curX + dx);
+         ObjectSetInteger(0, name, OBJPROP_YDISTANCE, curY + dy);
+      }
+   }
+   ChartRedraw(0);
+}
+
 void UpdateUIPositions()
 {
    BuildUIPanel();
@@ -1886,8 +2073,11 @@ int OnInit()
    if(InpShowPanel)
       BuildUIPanel();
       
-   // Initialize 10-second timer for Auto Day/Night Scheduling
-   EventSetTimer(10);
+   g_auto_schedule_active = InpAutoSchedule;
+   if(g_auto_schedule_active)
+   {
+      EventSetTimer(10);
+   }
       
    Print("AuraChart Studio v2.0 by Shayan Namayandeh initialized successfully. Theme: ", g_themes[g_current_theme_idx].name);
    return(INIT_SUCCEEDED);
@@ -1915,7 +2105,7 @@ void OnDeinit(const int reason)
 //+------------------------------------------------------------------+
 void OnTimer()
 {
-   if(!InpAutoSchedule)
+   if(!g_auto_schedule_active)
       return;
       
    datetime now = InpScheduleUseLocalTime ? TimeLocal() : TimeCurrent();
@@ -1939,11 +2129,22 @@ void OnTimer()
    else
       isDay = (curMins >= dayMins || curMins < nightMins);
       
-   int targetTheme = isDay ? (int)InpDayTheme : (int)InpNightTheme;
-   if(targetTheme != g_current_theme_idx)
+   int currentPhase = isDay ? 0 : 1;
+   
+   // First run: just initialize phase without modifying user's manual choice
+   if(g_last_scheduled_phase == -1)
    {
+      g_last_scheduled_phase = currentPhase;
+      return;
+   }
+   
+   // ONLY switch when crossing a day/night transition boundary!
+   if(currentPhase != g_last_scheduled_phase)
+   {
+      g_last_scheduled_phase = currentPhase;
+      int targetTheme = isDay ? (int)InpDayTheme : (int)InpNightTheme;
       SetTheme(targetTheme);
-      SetStatusMessage("Auto Schedule Switch: " + (isDay ? "Day" : "Night"));
+      SetStatusMessage("Auto Schedule: Switched to " + (isDay ? "Day" : "Night") + " Mode");
    }
 }
 
@@ -1976,6 +2177,7 @@ void OnChartEvent(const int id,
          if(g_is_dragging)
          {
             g_is_dragging = false;
+            ChartSetInteger(0, CHART_MOUSE_SCROLL, true);
             SaveSettings();
          }
          return;
@@ -1989,33 +2191,37 @@ void OnChartEvent(const int id,
          if(newX < 5) newX = 5;
          if(newY < 5) newY = 5;
          
-         if(newX != g_panel_x || newY != g_panel_y)
+         int dx = newX - g_panel_x;
+         int dy = newY - g_panel_y;
+         
+         if(dx != 0 || dy != 0)
          {
             g_panel_x = newX;
             g_panel_y = newY;
-            UpdateUIPositions();
+            MoveAllUIObjects(dx, dy);
          }
          return;
       }
       
       if(!g_compact_mode)
       {
-         // Full HUD header area: X: [g_panel_x, g_panel_x + 220], Y: [g_panel_y, g_panel_y + 30]
-         if(mouseX >= g_panel_x && mouseX <= (g_panel_x + 220) &&
-            mouseY >= g_panel_y && mouseY <= (g_panel_y + 30))
+         // Full HUD header area: X: [g_panel_x, g_panel_x + 245], Y: [g_panel_y, g_panel_y + 32]
+         if(mouseX >= g_panel_x && mouseX <= (g_panel_x + 245) &&
+            mouseY >= g_panel_y && mouseY <= (g_panel_y + 32))
          {
             g_is_dragging = true;
             g_drag_start_mouse_x = mouseX;
             g_drag_start_mouse_y = mouseY;
             g_drag_start_panel_x = g_panel_x;
             g_drag_start_panel_y = g_panel_y;
+            ChartSetInteger(0, CHART_MOUSE_SCROLL, false);
             return;
          }
       }
       else
       {
-         // Compact Mode pill drag handle area: X: [g_panel_x, g_panel_x + 35]
-         if(mouseX >= g_panel_x && mouseX <= (g_panel_x + 35) &&
+         // Compact Mode pill drag handle area: X: [g_panel_x, g_panel_x + 55]
+         if(mouseX >= g_panel_x && mouseX <= (g_panel_x + 55) &&
             mouseY >= g_panel_y && mouseY <= (g_panel_y + 36))
          {
             g_is_dragging = true;
@@ -2023,6 +2229,7 @@ void OnChartEvent(const int id,
             g_drag_start_mouse_y = mouseY;
             g_drag_start_panel_x = g_panel_x;
             g_drag_start_panel_y = g_panel_y;
+            ChartSetInteger(0, CHART_MOUSE_SCROLL, false);
             return;
          }
       }
@@ -2050,6 +2257,48 @@ void OnChartEvent(const int id,
       if(sparam == g_ui_prefix + "TAB_3") { g_active_tab = TAB_SCHEDULE; BuildUIPanel(); return; }
       if(sparam == g_ui_prefix + "TAB_4") { g_active_tab = TAB_SETTINGS; BuildUIPanel(); return; }
       
+      // Direct Theme Row Click
+      if(StringFind(sparam, g_ui_prefix + "BTN_SELTHM_") == 0)
+      {
+         int sIdx = (int)StringToInteger(StringSubstr(sparam, StringLen(g_ui_prefix + "BTN_SELTHM_")));
+         if(sIdx >= 0 && sIdx < g_themes_count)
+         {
+            SetTheme(sIdx);
+         }
+         return;
+      }
+
+      // Filter Pills
+      if(sparam == g_ui_prefix + "BTN_FLT_ALL")     { g_list_cat_filter = -1; g_list_page = 0; BuildUIPanel(); return; }
+      if(sparam == g_ui_prefix + "BTN_FLT_DARK")    { g_list_cat_filter = 0;  g_list_page = 0; BuildUIPanel(); return; }
+      if(sparam == g_ui_prefix + "BTN_FLT_LIGHT")   { g_list_cat_filter = 1;  g_list_page = 0; BuildUIPanel(); return; }
+      if(sparam == g_ui_prefix + "BTN_FLT_FANTASY") { g_list_cat_filter = 2;  g_list_page = 0; BuildUIPanel(); return; }
+      if(sparam == g_ui_prefix + "BTN_FLT_ACCESS")  { g_list_cat_filter = 3;  g_list_page = 0; BuildUIPanel(); return; }
+      if(sparam == g_ui_prefix + "BTN_FLT_FAV")     { g_list_cat_filter = 4;  g_list_page = 0; BuildUIPanel(); return; }
+
+      // Pagination
+      if(sparam == g_ui_prefix + "BTN_PAGE_PREV")
+      {
+         if(g_list_page > 0)
+         {
+            g_list_page--;
+            BuildUIPanel();
+         }
+         return;
+      }
+      if(sparam == g_ui_prefix + "BTN_PAGE_NEXT")
+      {
+         int fil[];
+         int tot = GetFilteredThemeIndices(fil);
+         int pMax = (tot + THEMES_PER_PAGE - 1) / THEMES_PER_PAGE;
+         if(g_list_page < pMax - 1)
+         {
+            g_list_page++;
+            BuildUIPanel();
+         }
+         return;
+      }
+
       // Basic Actions
       if(sparam == g_ui_prefix + "BTN_NEXT")      { NextTheme(); return; }
       if(sparam == g_ui_prefix + "BTN_PREV")      { PrevTheme(); return; }
@@ -2212,8 +2461,12 @@ void OnChartEvent(const int id,
       // Schedule Toggle
       if(sparam == g_ui_prefix + "BTN_TOGGLE_SCH")
       {
-         // Toggle visual state
-         SetStatusMessage("Scheduling status changed.");
+         g_auto_schedule_active = !g_auto_schedule_active;
+         if(g_auto_schedule_active)
+            EventSetTimer(10);
+         else
+            EventKillTimer();
+         SetStatusMessage("Scheduling: " + (g_auto_schedule_active ? "ON" : "OFF"));
          BuildUIPanel();
          return;
       }
